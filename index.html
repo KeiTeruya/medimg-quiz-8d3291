@@ -82,11 +82,12 @@
 </div>
 <script>
 (function(){
-  function passed(){try{return document.cookie.indexOf('midori_gate=ok')>=0||localStorage.getItem('medimg_gate')==='ok';}catch(e){return false;}}
+  function passed(){try{return document.cookie.indexOf('__session=ok')>=0||document.cookie.indexOf('midori_gate=ok')>=0||localStorage.getItem('medimg_gate')==='ok';}catch(e){return false;}}
+  function setShared(){try{localStorage.setItem('medimg_gate','ok');}catch(e){} try{var d=location.hostname.indexOf('midori-ai.com')>=0?'; domain=.midori-ai.com':'';document.cookie='__session=ok; path=/; max-age=31536000; samesite=lax'+d;}catch(e){}}
   var m=document.getElementById('pwModal');
   if(passed()){ m.style.display='none'; return; }
   var i=document.getElementById('pwI'); setTimeout(function(){i.focus();},50);
-  function done(){ if((i.value||'').trim()==='0000'){ try{localStorage.setItem('medimg_gate','ok');}catch(e){} m.style.display='none'; } else { document.getElementById('pwE').textContent='パスワードが違います'; i.value=''; } }
+  function done(){ if((i.value||'').trim()==='0000'){ setShared(); m.style.display='none'; } else { document.getElementById('pwE').textContent='パスワードが違います'; i.value=''; } }
   document.getElementById('pwB').onclick=done;
   i.onkeydown=function(e){ if(e.key==='Enter'){e.preventDefault();done();} };
 })();
