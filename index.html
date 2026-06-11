@@ -71,6 +71,26 @@
 </style>
 </head>
 <body>
+<div id="pwModal" style="position:fixed;inset:0;z-index:99999;background:#0f1216;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Noto Sans JP',sans-serif">
+  <div style="background:#171c23;border:1px solid #2c3744;border-radius:16px;padding:28px 24px;width:300px;max-width:90vw;text-align:center">
+    <div style="font-size:18px;font-weight:700;color:#e7edf3;margin-bottom:4px">🔒 医療画像クイズ</div>
+    <div style="font-size:12px;color:#9fb0c0;margin-bottom:16px">パスワードを入力してください</div>
+    <input id="pwI" type="password" inputmode="numeric" autocomplete="off" placeholder="••••" style="width:100%;background:#0f1216;border:1px solid #2c3744;color:#e7edf3;border-radius:10px;padding:12px;font-size:18px;text-align:center;letter-spacing:4px;outline:none">
+    <button id="pwB" style="width:100%;margin-top:12px;background:#5ab0ff;color:#04121f;border:0;border-radius:10px;padding:12px;font-weight:700;cursor:pointer">入る</button>
+    <div id="pwE" style="color:#ff6b6b;font-size:12px;height:16px;margin-top:8px"></div>
+  </div>
+</div>
+<script>
+(function(){
+  function passed(){try{return document.cookie.indexOf('midori_gate=ok')>=0||localStorage.getItem('medimg_gate')==='ok';}catch(e){return false;}}
+  var m=document.getElementById('pwModal');
+  if(passed()){ m.style.display='none'; return; }
+  var i=document.getElementById('pwI'); setTimeout(function(){i.focus();},50);
+  function done(){ if((i.value||'').trim()==='0000'){ try{localStorage.setItem('medimg_gate','ok');}catch(e){} m.style.display='none'; } else { document.getElementById('pwE').textContent='パスワードが違います'; i.value=''; } }
+  document.getElementById('pwB').onclick=done;
+  i.onkeydown=function(e){ if(e.key==='Enter'){e.preventDefault();done();} };
+})();
+</script>
 <header>
   <h1>医療画像クイズ 暗記アプリ <span style="font-weight:400;color:var(--muted);font-size:12px" id="totalCount"></span></h1>
   <div class="row" id="srcRow"></div>
